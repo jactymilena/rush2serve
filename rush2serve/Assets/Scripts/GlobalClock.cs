@@ -7,7 +7,7 @@ public sealed class GlobalClock : MonoBehaviour
 {
     public static GlobalClock Instance { get; private set; }
 
-    private SortedDictionary<float, Customer> waitingCustomers;
+    private SortedDictionary<float, IWaitingObject> waitingObjects;
     private float clock;
 
     void Awake()
@@ -20,7 +20,7 @@ public sealed class GlobalClock : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
-            waitingCustomers = new SortedDictionary<float, Customer>();
+            waitingObjects = new SortedDictionary<float, IWaitingObject>();
         }
     }
 
@@ -33,14 +33,14 @@ public sealed class GlobalClock : MonoBehaviour
     {
         clock = Time.realtimeSinceStartup;
 
-        if (waitingCustomers != null && waitingCustomers.Count > 0)
+        if (waitingObjects != null && waitingObjects.Count > 0)
         {
             List<float> waitingTimeToRemove = new List<float>();
-            foreach (float waitingTime in waitingCustomers.Keys.ToList())
+            foreach (float waitingTime in waitingObjects.Keys.ToList())
             {
                 if (clock > waitingTime)
                 {
-                    waitingCustomers[waitingTime].WaitingTimeEnded();
+                    waitingObjects[waitingTime].WaitingTimeEnded();
                     waitingTimeToRemove.Add(waitingTime);
                 }
                 else
@@ -51,13 +51,13 @@ public sealed class GlobalClock : MonoBehaviour
 
             foreach (float waitingTime in waitingTimeToRemove)
             {
-                waitingCustomers.Remove(waitingTime);
+                waitingObjects.Remove(waitingTime);
             }
         }
     }
 
-    public void AddCustomer(float waitingTime, Customer customer)
+    public void AddCustomer(float waitingTime, IWaitingObject waitingObject)
     {
-        waitingCustomers[waitingTime + clock] = customer;
+        waitingObjects[waitingTime + clock] = waitingObject;
     }
 }

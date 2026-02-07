@@ -10,8 +10,7 @@ public class CustomerWaitServiceState : CustomerState
     {
         // TODO: play animation, start timer
         Customer = customer;
-        GlobalClock globalClock = GlobalClock.Instance;
-        globalClock.AddCustomer(WaitingTime, customer);
+        GlobalClock.Instance.AddCustomer(WaitingTime, customer);
 
         Debug.Log(StateName);
 

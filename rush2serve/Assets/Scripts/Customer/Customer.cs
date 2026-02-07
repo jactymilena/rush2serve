@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Customer : MonoBehaviour
+public class Customer : MonoBehaviour, IWaitingObject
 {
     [SerializeField]
     TextMeshProUGUI stateText;
