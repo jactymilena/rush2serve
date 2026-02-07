@@ -23,9 +23,10 @@ public class CustomerWaitServiceState : CustomerState
         if (NextState != null && Customer != null)
         {
             NextState.Enter(Customer);
-        }
 
-        return NextState;
+            return NextState;
+        }
+        return this;
     }
 
     public override void Exit()
